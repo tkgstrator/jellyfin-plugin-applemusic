@@ -1,7 +1,5 @@
 using System;
-using System.Globalization;
-using Jellyfin.Plugin.AppleMusic.ExternalIds;
-using MediaBrowser.Model.Entities;
+using System.Linq;
 
 namespace Jellyfin.Plugin.AppleMusic.Utils;
 
@@ -19,6 +17,11 @@ public static class PluginUtils
     /// Gets Apple Music base URL.
     /// </summary>
     public static string AppleMusicBaseUrl => "https://music.apple.com/us";
+
+    /// <summary>
+    /// Gets Apple Music API base URL.
+    /// </summary>
+    public static string AppleMusicApiBaseUrl => "https://api.music.apple.com/v1";
 
     /// <summary>
     /// Update image resolution (width)x(height)(opts) in image URL.
@@ -39,27 +42,13 @@ public static class PluginUtils
     }
 
     /// <summary>
-    /// Get provider URL specified by <see cref="ProviderKey"/>.
+    /// Get Apple Music ID from Apple Music URL.
+    /// The URL format is always "https://music.apple.com/us/[item type]/[ID]".
     /// </summary>
-    /// <param name="item">Item to get the provider URL for.</param>
-    /// <param name="key">Kind of provider URL to get.</param>
-    /// <returns>Item provider URL. Empty if not found.</returns>
-    public static string GetProviderUrl(IHasProviderIds item, ProviderKey key)
+    /// <param name="url">Apple Music URL.</param>
+    /// <returns>Item ID.</returns>
+    public static string GetIdFromUrl(string url)
     {
-        var providerId = item.GetProviderId(key.ToString());
-        if (providerId is null)
-        {
-            return string.Empty;
-        }
-
-        string? urlFormat = key switch
-        {
-            ProviderKey.ITunesAlbum => new ITunesAlbumExternalId().UrlFormatString,
-            ProviderKey.ITunesAlbumArtist => new ITunesAlbumArtistExternalId().UrlFormatString,
-            ProviderKey.ITunesArtist => new ITunesArtistExternalId().UrlFormatString,
-            _ => null
-        };
-
-        return urlFormat is not null ? string.Format(CultureInfo.InvariantCulture, urlFormat, providerId) : string.Empty;
+        return url.Split('/').LastOrDefault(string.Empty);
     }
 }
