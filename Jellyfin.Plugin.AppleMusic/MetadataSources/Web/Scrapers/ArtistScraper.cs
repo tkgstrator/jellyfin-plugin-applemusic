@@ -6,7 +6,7 @@ using Jellyfin.Plugin.AppleMusic.Utils;
 using MediaBrowser.Controller.Entities.Audio;
 using Microsoft.Extensions.Logging;
 
-namespace Jellyfin.Plugin.AppleMusic.Scrapers;
+namespace Jellyfin.Plugin.AppleMusic.MetadataSources.Web.Scrapers;
 
 /// <summary>
 /// Apple Music artist metadata scraper.
@@ -35,31 +35,40 @@ public class ArtistScraper : IScraper<MusicArtist>
         var artistName = document.Body.SelectSingleNode(ArtistNameXPath)?.TextContent;
         if (artistName is null)
         {
-            _logger.LogDebug("Artist name not found");
+            _logger.LogTrace("Artist name not found");
             return null;
         }
+
+        _logger.LogTrace("Found artist name");
 
         var overview = document.Body.SelectSingleNode(OverviewXPath)?.TextContent;
         if (overview is null)
         {
-            _logger.LogDebug("Artist overview not found");
+            _logger.LogTrace("Artist overview not found");
         }
+
+        _logger.LogTrace("Found artist overview");
 
         var imageUrl = document.Head.SelectSingleNode(ImageXPath)?.TextContent;
         if (imageUrl is null)
         {
-            _logger.LogDebug("Artist image not found");
+            _logger.LogTrace("Artist image not found");
         }
         else
         {
+            _logger.LogTrace("Found artist image");
             imageUrl = PluginUtils.UpdateImageSize(imageUrl, "1400x1400cc");
         }
+
+        _logger.LogDebug("Artist scraping completed");
 
         return new ITunesArtist
         {
             ImageUrl = imageUrl,
             Name = artistName.Trim(),
-            About = overview
+            About = overview,
+            Url = document.Url,
+            Id = PluginUtils.GetIdFromUrl(document.Url),
         };
     }
 }
