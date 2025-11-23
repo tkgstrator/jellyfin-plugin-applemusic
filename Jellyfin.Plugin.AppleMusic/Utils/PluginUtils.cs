@@ -1,5 +1,8 @@
 using System;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
+using Jellyfin.Plugin.AppleMusic.Configuration;
 
 namespace Jellyfin.Plugin.AppleMusic.Utils;
 
@@ -14,14 +17,34 @@ public static class PluginUtils
     public static string PluginName => "Apple Music";
 
     /// <summary>
-    /// Gets Apple Music base URL.
+    /// Gets Apple Music base URL based on the configured region.
     /// </summary>
-    public static string AppleMusicBaseUrl => "https://music.apple.com/us";
+    public static string AppleMusicBaseUrl
+    {
+        get
+        {
+            var region = Plugin.Instance!.Configuration.Region;
+            var regionCode = GetRegionCode(region);
+            return $"https://music.apple.com/{regionCode}";
+        }
+    }
 
     /// <summary>
     /// Gets Apple Music API base URL.
     /// </summary>
     public static string AppleMusicApiBaseUrl => "https://api.music.apple.com/v1";
+
+    /// <summary>
+    /// Gets the region code from RegionType enum.
+    /// </summary>
+    /// <param name="region">The region type.</param>
+    /// <returns>Region code string.</returns>
+    private static string GetRegionCode(RegionType region)
+    {
+        var field = region.GetType().GetField(region.ToString());
+        var attribute = field?.GetCustomAttribute<DescriptionAttribute>();
+        return attribute?.Description ?? "us";
+    }
 
     /// <summary>
     /// Update image resolution (width)x(height)(opts) in image URL.
