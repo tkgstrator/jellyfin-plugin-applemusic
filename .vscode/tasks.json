@@ -4,14 +4,14 @@
     {
       "label": "act: build",
       "type": "shell",
-      "command": "act push -W .github/workflows/build.yaml --container-options \"--env PIP_BREAK_SYSTEM_PACKAGES=1\" --verbose",
+      "command": "act push -W .github/workflows/build.yaml",
       "problemMatcher": [],
       "group": "test"
     },
     {
       "label": "act: publish",
       "type": "shell",
-      "command": "act release -W .github/workflows/publish.yaml --container-options \"--env PIP_BREAK_SYSTEM_PACKAGES=1\" --verbose",
+      "command": "act release -W .github/workflows/publish.yaml",
       "problemMatcher": [],
       "group": "test"
     }
