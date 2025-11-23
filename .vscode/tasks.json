@@ -16,63 +16,6 @@
         "kind": "build",
         "isDefault": true
       }
-    },
-    {
-      "label": "restore",
-      "command": "dotnet",
-      "type": "process",
-      "args": [
-        "restore",
-        "${workspaceFolder}/Jellyfin.Plugin.AppleMusic.sln"
-      ],
-      "problemMatcher": "$msCompile"
-    },
-    {
-      "label": "clean",
-      "command": "dotnet",
-      "type": "process",
-      "args": [
-        "clean",
-        "${workspaceFolder}/Jellyfin.Plugin.AppleMusic/Jellyfin.Plugin.AppleMusic.csproj"
-      ],
-      "problemMatcher": "$msCompile"
-    },
-    {
-      "label": "publish-plugin",
-      "command": "dotnet",
-      "type": "process",
-      "args": [
-        "publish",
-        "${workspaceFolder}/Jellyfin.Plugin.AppleMusic/Jellyfin.Plugin.AppleMusic.csproj",
-        "--configuration",
-        "Release",
-        "--output",
-        "${workspaceFolder}/bin/Release"
-      ],
-      "problemMatcher": "$msCompile",
-      "group": "build"
-    },
-    {
-      "label": "build-plugin (jprm)",
-      "type": "shell",
-      "command": "docker run --rm -v \"${workspaceFolder}:/workspace\" -w /workspace ghcr.io/oddstr13/jellyfin-plugin-repository-manager:latest --verbosity=debug plugin build .",
-      "problemMatcher": [],
-      "group": "build",
-      "presentation": {
-        "reveal": "always",
-        "panel": "new"
-      }
-    },
-    {
-      "label": "build-plugin-local",
-      "type": "shell",
-      "command": "jprm --verbosity=debug plugin build .",
-      "problemMatcher": [],
-      "group": "build",
-      "presentation": {
-        "reveal": "always",
-        "panel": "new"
-      }
     }
   ]
 }
