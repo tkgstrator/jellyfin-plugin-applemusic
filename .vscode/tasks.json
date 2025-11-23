@@ -4,14 +4,14 @@
     {
       "label": "act: build",
       "type": "shell",
-      "command": "act push -W .github/workflows/build.yaml",
+      "command": "act push -W .github/workflows/build.yaml --verbose",
       "problemMatcher": [],
       "group": "test"
     },
     {
       "label": "act: publish",
       "type": "shell",
-      "command": "act release -W .github/workflows/publish.yaml",
+      "command": "act release -W .github/workflows/publish.yaml --verbose",
       "problemMatcher": [],
       "group": "test"
     }
