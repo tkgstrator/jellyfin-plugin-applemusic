@@ -1,0 +1,13 @@
+{
+    "recommendations": [
+        "EditorConfig.EditorConfig",
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "PKief.material-icon-theme",
+        "antfu.file-nesting",
+        "ms-dotnettools.csdevkit",
+        "ms-dotnettools.csharp",
+        "ms-dotnettools.vscode-dotnet-runtime",
+        "vsls-contrib.gitdoc"
+    ]
+}
