@@ -2,41 +2,18 @@
 name: 'Publish Plugin'
 
 on:
-  workflow_call:
-    inputs:
-      repo:
-        type: string
-        required: true
-    secrets:
-      host:
-        required: true
-      user:
-        required: true
-      key:
-        required: true
+  release:
+    types:
+      - released
+  workflow_dispatch:
 
 jobs:
   publish:
-    runs-on: ubuntu-latest
-    env:
-      MANIFEST_FILE: "/var/www/repos/${{ inputs.repo }}/manifest.json"
-      REPO_PATH: "/var/www/repos/${{ inputs.repo }}"
-      REPO_URL: "https://repo.xkrivo.net/${{ inputs.repo }}"
-    steps:
-      - name: Update Plugin Manifest
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.host }}
-          username: ${{ secrets.user }}
-          key: ${{ secrets.key }}
-          script_stop: true
-          envs: MANIFEST_FILE,REPO_PATH,REPO_URL
-          script: |-
-            lockfile="/run/lock/jprm.lock"
-            pushd "${REPO_PATH}/${{ github.repository }}/${{ inputs.version }}" || exit 1
-            (
-                flock -x 300
-                python3.9 -m jprm --verbosity=debug repo add --url="${REPO_URL}" "${MANIFEST_FILE}" ./*.zip || exit 1
-            ) 300>${lockfile}
-            popd || exit 1
-            rm -r "${REPO_PATH}/${{ github.repository }}/${{ inputs.version }}" || exit 1
+    uses: jellyfin/jellyfin-meta-plugins/.github/workflows/publish.yaml@master
+    with:
+      version: ${{ github.event.release.tag_name }}
+      is-unstable: ${{ github.event.release.prerelease }}
+    secrets:
+      deploy-host: ${{ secrets.REPO_HOST }}
+      deploy-user: ${{ secrets.REPO_USER }}
+      deploy-key: ${{ secrets.REPO_KEY }}
