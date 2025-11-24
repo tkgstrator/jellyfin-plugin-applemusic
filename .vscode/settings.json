@@ -7,4 +7,18 @@
   "gitdoc.autoPull": "onPush",
   "gitdoc.ai.enabled": true,
   "gitdoc.ai.customInstructions": "Generate a commit message in English following the Conventional Commits specification and `commitlint` rules. Use the format `<type>(<scope>): <short description>` and choose `<type>` from `build`, `ci`, `docs`, `feat`, `fix`, `perf`, `chore`, `refactor`, `revert`, `format`, `test`. Limit `<short description>` to 72 characters. If `<short description>` starts with an English word, it must be in lowercase.",
+  // jellyfinDir : The directory of the cloned jellyfin server project
+  // This needs to be built once before it can be used
+  "jellyfinDir": "${workspaceFolder}/../jellyfin/Jellyfin.Server",
+  // jellyfinWebDir : The directory of the cloned jellyfin-web project
+  // This needs to be built once before it can be used
+  "jellyfinWebDir": "${workspaceFolder}/../jellyfin-web",
+  // jellyfinDataDir : the root data directory for a running jellyfin instance
+  // This is where jellyfin stores its configs, plugins, metadata etc
+  // For Docker Compose setup, this points to the plugins directory
+  "jellyfinDataDir": "${workspaceFolder}/",
+  // The name of the plugin
+  "pluginName": "Jellyfin.Plugin.AppleMusic",
+  "pluginLabel": "Apple Music",
+  "pluginVersion": "3.1.0.0"
 }

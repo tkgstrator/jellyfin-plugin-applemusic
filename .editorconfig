@@ -20,6 +20,10 @@ max_line_length = 9999
 [*.{yml,yaml}]
 indent_size = 2
 
+# JSON indentation
+[*.json]
+indent_size = 2
+
 # XML indentation
 [*.{csproj,xml}]
 indent_size = 2
