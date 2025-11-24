@@ -64,7 +64,7 @@ public class ArtistImageProvider : IRemoteImageProvider
     {
         if (item is not MusicArtist artist)
         {
-            _logger.LogDebug("Provided item is not an artist, cannot continue");
+            _logger.LogInformation("Provided item is not an artist, cannot continue");
             return new List<RemoteImageInfo>();
         }
 
@@ -98,11 +98,11 @@ public class ArtistImageProvider : IRemoteImageProvider
 
     private async Task<List<RemoteImageInfo>> GetImageById(string appleMusicId, CancellationToken cancellationToken)
     {
-        _logger.LogDebug("Looking up artist by ID {Id}", appleMusicId);
+        _logger.LogInformation("Looking up artist by ID {Id}", appleMusicId);
         var artistData = await _metadataSource.GetArtistAsync(appleMusicId, cancellationToken);
         if (artistData?.ImageUrl is not null)
         {
-            _logger.LogDebug("Found image for artist ID {Id}", appleMusicId);
+            _logger.LogInformation("Found image for artist ID {Id}", appleMusicId);
             return
             [
                 new RemoteImageInfo
@@ -117,7 +117,7 @@ public class ArtistImageProvider : IRemoteImageProvider
             ];
         }
 
-        _logger.LogDebug("No image found for artist ID {Id}", appleMusicId);
+        _logger.LogInformation("No image found for artist ID {Id}", appleMusicId);
         return new List<RemoteImageInfo>();
     }
 }
