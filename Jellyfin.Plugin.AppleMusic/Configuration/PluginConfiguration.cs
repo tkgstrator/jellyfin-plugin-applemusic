@@ -31,12 +31,12 @@ namespace Jellyfin.Plugin.AppleMusic.Configuration
         /// </summary>
         public PluginConfiguration()
         {
-            Region = RegionType.US;
+            Region = RegionType.JA;
         }
 
         /// <summary>
         /// Gets or sets the Apple Music region.
         /// </summary>
-        public RegionType Region { get; set; } = RegionType.US;
+        public RegionType Region { get; set; } = RegionType.JA;
     }
 }
