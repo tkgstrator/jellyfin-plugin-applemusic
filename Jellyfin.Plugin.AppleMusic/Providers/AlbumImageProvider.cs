@@ -64,7 +64,7 @@ public class AlbumImageProvider : IRemoteImageProvider
     {
         if (item is not MusicAlbum album)
         {
-            _logger.LogDebug("Provided item is not an album, cannot continue");
+            _logger.LogInformation("Provided item is not an album, cannot continue");
             return new List<RemoteImageInfo>();
         }
 
@@ -104,11 +104,11 @@ public class AlbumImageProvider : IRemoteImageProvider
 
     private async Task<List<RemoteImageInfo>> GetImageById(string appleMusicId, CancellationToken cancellationToken)
     {
-        _logger.LogDebug("Looking up album by ID {Id}", appleMusicId);
+        _logger.LogInformation("Looking up album by ID {Id}", appleMusicId);
         var albumData = await _metadataSource.GetAlbumAsync(appleMusicId, cancellationToken);
         if (albumData?.ImageUrl is not null)
         {
-            _logger.LogDebug("Found image for album ID {Id}", appleMusicId);
+            _logger.LogInformation("Found image for album ID {Id}", appleMusicId);
             return
             [
                 new RemoteImageInfo
@@ -123,7 +123,7 @@ public class AlbumImageProvider : IRemoteImageProvider
             ];
         }
 
-        _logger.LogDebug("Could not find image for album ID {Id}", appleMusicId);
+        _logger.LogInformation("Could not find image for album ID {Id}", appleMusicId);
         return new List<RemoteImageInfo>();
     }
 }

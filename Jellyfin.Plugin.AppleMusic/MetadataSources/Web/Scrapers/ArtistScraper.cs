@@ -67,7 +67,7 @@ public class ArtistScraper : IScraper<MusicArtist>
             imageUrl = PluginUtils.UpdateImageSize(imageUrl, "1400x1400cc");
         }
 
-        _logger.LogDebug("Artist scraping completed");
+        _logger.LogInformation("Artist scraping completed");
 
         return new ITunesArtist
         {

@@ -68,17 +68,17 @@ public class AlbumMetadataProvider : IRemoteMetadataProvider<MusicAlbum, AlbumIn
         var allResults = new List<RemoteSearchResult>();
         foreach (var result in searchResults)
         {
-            _logger.LogDebug("Processing search result: {ResultName}", result.Name);
+            _logger.LogInformation("Processing search result: {ResultName}", result.Name);
             if (result is not ITunesAlbum album)
             {
-                _logger.LogDebug("Search result is not an album, ignoring");
+                _logger.LogInformation("Search result is not an album, ignoring");
                 continue;
             }
 
             // Check year only if the year was specified in the search form
             if (searchInfo.Year is not null && searchInfo.Year != album.ReleaseDate?.Year)
             {
-                _logger.LogDebug("Album {AlbumName} does not match specified year, ignoring", album.Name);
+                _logger.LogInformation("Album {AlbumName} does not match specified year, ignoring", album.Name);
                 continue;
             }
 
@@ -96,17 +96,17 @@ public class AlbumMetadataProvider : IRemoteMetadataProvider<MusicAlbum, AlbumIn
         var appleMusicId = info.GetProviderId(nameof(ProviderKey.ITunesAlbum));
         if (!string.IsNullOrEmpty(appleMusicId))
         {
-            _logger.LogDebug("Using ID {Id} for album metadata lookup", appleMusicId);
+            _logger.LogInformation("Using ID {Id} for album metadata lookup", appleMusicId);
             albumData = await _metadataSource.GetAlbumAsync(appleMusicId, cancellationToken);
             if (albumData is null)
             {
-                _logger.LogDebug("No album data found using ID {Id}", appleMusicId);
+                _logger.LogInformation("No album data found using ID {Id}", appleMusicId);
                 return EmptyMetadataResult();
             }
         }
         else
         {
-            _logger.LogDebug("Apple Music album ID is not available, cannot continue");
+            _logger.LogInformation("Apple Music album ID is not available, cannot continue");
             return EmptyMetadataResult();
         }
 
@@ -133,11 +133,11 @@ public class AlbumMetadataProvider : IRemoteMetadataProvider<MusicAlbum, AlbumIn
         var albumArtist = albumData.Artists.FirstOrDefault();
         if (albumArtist is not null)
         {
-            _logger.LogDebug("Setting provider ID for album artist {ArtistName}", albumArtist.Name);
+            _logger.LogInformation("Setting provider ID for album artist {ArtistName}", albumArtist.Name);
             metadataResult.Item.SetProviderId(nameof(ProviderKey.ITunesAlbumArtist), albumArtist.Id);
         }
 
-        _logger.LogDebug("Setting provider ID for album {AlbumName}", albumData.Name);
+        _logger.LogInformation("Setting provider ID for album {AlbumName}", albumData.Name);
         metadataResult.Item.SetProviderId(nameof(ProviderKey.ITunesAlbum), albumData.Id);
         return metadataResult;
     }
@@ -155,15 +155,15 @@ public class AlbumMetadataProvider : IRemoteMetadataProvider<MusicAlbum, AlbumIn
 
     private async Task<List<RemoteSearchResult>> GetAlbumById(string appleMusicId, CancellationToken cancellationToken)
     {
-        _logger.LogDebug("Getting album by ID {Id}", appleMusicId);
+        _logger.LogInformation("Getting album by ID {Id}", appleMusicId);
         var albumData = await _metadataSource.GetAlbumAsync(appleMusicId, cancellationToken);
         if (albumData is not null)
         {
-            _logger.LogDebug("Found album by ID {Id}", appleMusicId);
+            _logger.LogInformation("Found album by ID {Id}", appleMusicId);
             return new List<RemoteSearchResult> { albumData.ToRemoteSearchResult() };
         }
 
-        _logger.LogDebug("No album found for ID {Id}", appleMusicId);
+        _logger.LogInformation("No album found for ID {Id}", appleMusicId);
         return new List<RemoteSearchResult>();
     }
 }

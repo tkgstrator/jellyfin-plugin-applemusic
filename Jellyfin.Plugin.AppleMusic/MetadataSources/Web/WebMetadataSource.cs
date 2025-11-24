@@ -50,7 +50,7 @@ public class WebMetadataSource : IMetadataSource
         var encodedTerm = Uri.EscapeDataString(searchTerm);
         var searchUrl = $"{PluginUtils.AppleMusicBaseUrl}/search?term={encodedTerm}";
 
-        _logger.LogDebug("Opening url: {Url}", searchUrl);
+        _logger.LogInformation("Opening url: {Url}", searchUrl);
         var document = await OpenPage(searchUrl, cancellationToken);
 
         if (itemType is ItemType.Album)
@@ -77,7 +77,7 @@ public class WebMetadataSource : IMetadataSource
     public async Task<ITunesAlbum?> GetAlbumAsync(string albumId, CancellationToken cancellationToken)
     {
         var albumUrl = $"{PluginUtils.AppleMusicBaseUrl}/album/{albumId}";
-        _logger.LogDebug("Getting album data from {Url}", albumUrl);
+        _logger.LogInformation("Getting album data from {Url}", albumUrl);
 
         var document = await OpenPage(albumUrl, cancellationToken);
         return await ScrapeAlbum(document, cancellationToken);
@@ -87,7 +87,7 @@ public class WebMetadataSource : IMetadataSource
     public async Task<ITunesArtist?> GetArtistAsync(string artistId, CancellationToken cancellationToken)
     {
         var artistUrl = $"{PluginUtils.AppleMusicBaseUrl}/artist/{artistId}";
-        _logger.LogDebug("Getting artist data from {Url}", artistUrl);
+        _logger.LogInformation("Getting artist data from {Url}", artistUrl);
 
         var document = await OpenPage(artistUrl, cancellationToken);
         return await ScrapeArtist(document, cancellationToken);
@@ -95,7 +95,7 @@ public class WebMetadataSource : IMetadataSource
 
     private async Task<IDocument> OpenPage(string url, CancellationToken cancellationToken)
     {
-        _logger.LogDebug("Opening page: {Url}", url);
+        _logger.LogInformation("Opening page: {Url}", url);
         var context = BrowsingContext.New(_config);
         return await context.OpenAsync(url, cancellationToken);
     }
@@ -149,15 +149,15 @@ public class WebMetadataSource : IMetadataSource
     private async Task<ITunesAlbum?> ScrapeAlbum(IDocument document, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        _logger.LogDebug("Scraping album from {Url}", document.Url);
+        _logger.LogInformation("Scraping album from {Url}", document.Url);
         var scrapedAlbum = _albumScraper.Scrape(document);
         if (scrapedAlbum is not ITunesAlbum album)
         {
-            _logger.LogDebug("Scraping album failed");
+            _logger.LogInformation("Scraping album failed");
             return null;
         }
 
-        _logger.LogDebug("Scraped album from url {Url}", document.Url);
+        _logger.LogInformation("Scraped album from url {Url}", document.Url);
 
         var artistTasks = album.Artists
             .Select(artist => PluginUtils.GetIdFromUrl(artist.Url))
@@ -176,14 +176,14 @@ public class WebMetadataSource : IMetadataSource
         cancellationToken.ThrowIfCancellationRequested();
         var task = new Task<ITunesArtist?>(() =>
         {
-            _logger.LogDebug("Scraping artist from {Url}", document.Url);
+            _logger.LogInformation("Scraping artist from {Url}", document.Url);
             var scrapedArtist = _artistScraper.Scrape(document);
             if (scrapedArtist is ITunesArtist artist)
             {
                 return artist;
             }
 
-            _logger.LogDebug("Scraping artist failed");
+            _logger.LogInformation("Scraping artist failed");
             return null;
         });
 

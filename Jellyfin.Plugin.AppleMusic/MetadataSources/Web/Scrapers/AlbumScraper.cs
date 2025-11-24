@@ -72,7 +72,7 @@ public class AlbumScraper : IScraper<MusicAlbum>
             return null;
         }
 
-        _logger.LogDebug("Found {Count} artist nodes in album", artistNodes.Count);
+        _logger.LogInformation("Found {Count} artist nodes in album", artistNodes.Count);
 
         var artists = new List<ITunesArtist>();
         foreach (var node in artistNodes)
@@ -87,14 +87,14 @@ public class AlbumScraper : IScraper<MusicAlbum>
             artists.Add(new ITunesArtist { Name = artistElem.TextContent, Url = artistElem.Href, });
         }
 
-        _logger.LogDebug("Parsed {Count} artists from album", artists.Count);
-        _logger.LogDebug("Processing optional album details");
+        _logger.LogInformation("Parsed {Count} artists from album", artists.Count);
+        _logger.LogInformation("Processing optional album details");
 
         var aboutText = document.Body.SelectSingleNode(AlbumDetailXPath + AboutXPath)?.TextContent;
         var descString = document.Body.SelectSingleNode(AlbumDescriptionXPath)?.TextContent;
         var parsedDesc = ParseDescription(descString);
 
-        _logger.LogDebug("Album scraping completed");
+        _logger.LogInformation("Album scraping completed");
 
         return new ITunesAlbum
         {
@@ -118,7 +118,7 @@ public class AlbumScraper : IScraper<MusicAlbum>
         var match = Regex.Match(details, AlbumDescRegex, RegexOptions.Multiline);
         if (!match.Groups["date"].Success || !match.Groups["productionYear"].Success)
         {
-            _logger.LogDebug("Failed to parse album details {Details}", details);
+            _logger.LogInformation("Failed to parse album details {Details}", details);
         }
 
         var date = DateTime.ParseExact(match.Groups["date"].Value, "MMMM d, yyyy", DateTimeFormatInfo.InvariantInfo);
