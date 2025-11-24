@@ -7,3 +7,22 @@ services:
       - ../:/home/vscode/app:cached
     tty: true
     stdin_open: true
+
+  jellyfin:
+    image: jellyfin/jellyfin:10.11
+    container_name: jellyfin
+    volumes:
+      - ../plugins:/config/plugins
+      - ../media:/media
+      - cache:/cache
+    restart: unless-stopped
+    ports:
+      - 8096:8096/tcp
+      - 7359:7359/udp
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
+volumes:
+  cache:
+    name: jellyfin_cache
+    driver: local
