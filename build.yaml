@@ -1,6 +1,6 @@
 ---
 name: "Apple Music"
-guid: "a9f62a44-fea5-46c3-ac26-55abba29c7c8"
+guid: "d97c03a1-289a-4ee5-b8bd-8f274e851a79"
 version: "3.1.0.0"
 targetAbi: "10.10.0.0"
 framework: "net9.0"
