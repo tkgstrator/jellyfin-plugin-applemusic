@@ -8,7 +8,7 @@ overview: "Fetch images and metadata from Apple Music."
 description: >
   Apple Music artist and album images and metadata provider.
 category: "Metadata"
-owner: "lyarenei"
+owner: "tkgstrator"
 artifacts:
   - "AngleSharp.dll"
   - "AngleSharp.XPath.dll"
